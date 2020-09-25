@@ -32,6 +32,7 @@ public class BankAccountService{
         restTemplate.put(url, bankAccount);
     }
 
+
     public BankAccountService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -74,5 +75,12 @@ public class BankAccountService{
     }
 
 
+    public void deleteBankAccount(String bankaccounts, List<BankAccount> bankAccounts) {
+    }
+
+    public void deleteBankAccount(int id) {
+        String url ="http://localhost:8091/api/bankaccount/" + id;
+        restTemplate.delete(url);
+    }
 }
 
