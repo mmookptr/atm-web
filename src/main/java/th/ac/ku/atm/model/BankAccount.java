@@ -11,13 +11,6 @@ public class BankAccount {
     private String type;
     private double balance;
 
-    public BankAccount(int id, String customerId, String type, double balance){
-        this.id = id;
-        this.customerId = customerId;
-        this.type = type;
-        this.balance = balance;
-    }
-
     public int getId(){
         return id;
     }
