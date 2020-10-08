@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import th.ac.ku.atm.model.BankAccount;
+import th.ac.ku.atm.model.Transaction;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -26,10 +27,11 @@ public class BankAccountService{
         return response.getBody();
     }
 
-    public void editBankAccount(BankAccount bankAccount) {
-        String url = "http://localhost:8091/api/bankaccount/" +
-                bankAccount.getId();
-        restTemplate.put(url, bankAccount);
+    public void makeTransaction(Transaction transaction) {
+        String url = "http://localhost:8091/api/bankaccount/transaction/" +
+                transaction.getBankaccountId();
+
+        restTemplate.postForObject(url, transaction, Transaction.class);
     }
 
 
@@ -47,7 +49,6 @@ public class BankAccountService{
 
         return Arrays.asList(accounts);
     }
-
 
     @PostConstruct
     public void postConstruct() {

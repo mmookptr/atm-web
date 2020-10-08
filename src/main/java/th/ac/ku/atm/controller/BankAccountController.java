@@ -2,9 +2,11 @@ package th.ac.ku.atm.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import th.ac.ku.atm.model.BankAccount;
 import th.ac.ku.atm.service.BankAccountService;
+import th.ac.ku.atm.model.Transaction;
 
 @Controller
 @RequestMapping("/bankaccount")
@@ -29,20 +31,30 @@ public class BankAccountController {
         return "redirect:bankaccount";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/transaction/{id}")
     public String getEditBankAccountPage(@PathVariable int id,
                                          Model model) {
         BankAccount account = accountService.getBankAccount(id);
         model.addAttribute("bankAccount", account);
-        return "bankaccount-edit";
+        return "bankaccount-transaction";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editAccount(@PathVariable int id,
-                              @ModelAttribute BankAccount bankAccount,
-                              Model model) {
+    @PostMapping("/transaction/{id}")
+    public String makeTransaction(@PathVariable int id,
+                                  @RequestBody MultiValueMap<String, String> formData,
+                                  Model model) {
 
-        accountService.editBankAccount(bankAccount);
+        for (String key: formData.keySet()) {
+            System.out.println(key + " " + formData.get(key));
+        }
+
+        Transaction transaction = new Transaction(
+                id,
+                Double.parseDouble(formData.get("transactionAmount").get(0)),
+                formData.get("transactionType").get(0)
+        );
+
+        accountService.makeTransaction(transaction);
         model.addAttribute("bankaccounts",accountService.getBankAccounts());
         return "redirect:/bankaccount";
     }
